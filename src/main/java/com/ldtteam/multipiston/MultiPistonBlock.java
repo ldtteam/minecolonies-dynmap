@@ -4,26 +4,27 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.BaseEntityBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.BitSetDiscreteVoxelShape;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * This Class is about the MultiBlock which takes care of pushing others around (In a non mean way).
+ * This Class is about the multipiston which takes care of pushing others around (In a non mean way).
  */
-public class MultiBlock extends BaseEntityBlock
+public class MultiPistonBlock extends BaseEntityBlock
 {
-
     /**
      * The hardness this block has.
      */
@@ -38,10 +39,15 @@ public class MultiBlock extends BaseEntityBlock
      * Constructor for the Substitution block.
      * sets the creative tab, as well as the resistance and the hardness.
      */
-    public MultiBlock()
+    public MultiPistonBlock()
     {
         super(Properties.of(Material.WOOD).strength(BLOCK_HARDNESS, RESISTANCE));
     }
+
+    /**
+     * The blocks shape.
+     */
+    private static final VoxelShape SHAPE = Block.box(0.01D, 0.01D, 0.01D, 15.99D, 15.99D, 15.99D);
 
     @NotNull
     @Override
@@ -49,7 +55,7 @@ public class MultiBlock extends BaseEntityBlock
     {
         if (level.isClientSide)
         {
-            new WindowMultiBlock(pos).open();
+            new WindowMultiPiston(pos).open();
         }
         return InteractionResult.SUCCESS;
     }
@@ -86,6 +92,20 @@ public class MultiBlock extends BaseEntityBlock
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull final Level level, @NotNull final BlockState state, @NotNull final BlockEntityType<T> type)
     {
-        return createTickerHelper(type, ModTileEntities.MULTIBLOCK, TileEntityMultiPiston::tick);
+        return createTickerHelper(type, ModTileEntities.multipiston.get(), TileEntityMultiPiston::tick);
+    }
+
+    @NotNull
+    @Override
+    public RenderShape getRenderShape(@NotNull BlockState state)
+    {
+        return RenderShape.MODEL;
+    }
+
+    @NotNull
+    @Override
+    public VoxelShape getShape(@NotNull final BlockState state, @NotNull final BlockGetter getter, @NotNull final BlockPos pos, @NotNull final CollisionContext context)
+    {
+        return SHAPE;
     }
 }

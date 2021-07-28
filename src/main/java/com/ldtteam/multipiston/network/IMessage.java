@@ -1,4 +1,4 @@
-package com.ldtteam.multiblock.network;
+package com.ldtteam.multipiston.network;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.LogicalSide;

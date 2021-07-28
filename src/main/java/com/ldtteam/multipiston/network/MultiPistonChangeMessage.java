@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Message class which handles updating the minecolonies multipiston.
  */
-public class multipistonChangeMessage implements IMessage
+public class MultiPistonChangeMessage implements IMessage
 {
     /**
      * The direction it should push or pull rom.
@@ -44,7 +44,7 @@ public class multipistonChangeMessage implements IMessage
     /**
      * Empty public constructor.
      */
-    public multipistonChangeMessage()
+    public MultiPistonChangeMessage()
     {
 
     }
@@ -57,7 +57,7 @@ public class multipistonChangeMessage implements IMessage
      * @param range the range it should work.
      * @param speed the speed it should have.
      */
-    public multipistonChangeMessage(final BlockPos pos, final Direction facing, final Direction output, final int range, final int speed)
+    public MultiPistonChangeMessage(final BlockPos pos, final Direction facing, final Direction output, final int range, final int speed)
     {
         this.pos = pos;
         this.direction = facing;

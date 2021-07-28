@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "multipiston:block/multipiston"
+      "model": "multipiston:block/multipistonblock"
     }
   }
 }

@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "SSS",
-    "RBR",
+    "R R",
     "PPP"
   ],
   "key": {
@@ -13,15 +13,12 @@
     "R": {
       "item": "minecraft:redstone_block"
     },
-    "B": {
-      "item": "structurize:sceptergold"
-    },
     "P": {
       "item": "minecraft:piston"
     }
   },
   "result": {
-    "item": "structurize:multiblock",
+    "item": "multipiston:multipiston",
     "count": 1
   }
 }

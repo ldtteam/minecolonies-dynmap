@@ -1,4 +1,4 @@
-package com.ldtteam.multiblock;
+package com.ldtteam.multipiston;
 
 import com.ldtteam.blockui.Log;
 import com.ldtteam.blockui.controls.Button;

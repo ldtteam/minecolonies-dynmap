@@ -6,7 +6,7 @@ import com.ldtteam.blockui.controls.Button;
 import com.ldtteam.blockui.controls.ButtonImage;
 import com.ldtteam.blockui.controls.TextField;
 import com.ldtteam.blockui.views.View;
-import com.ldtteam.multipiston.network.multipistonChangeMessage;
+import com.ldtteam.multipiston.network.MultiPistonChangeMessage;
 import com.ldtteam.multipiston.network.Network;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -23,7 +23,7 @@ import static net.minecraft.core.Direction.*;
 /**
  * BuildTool window.
  */
-public class Windowmultipiston extends AbstractWindowSkeleton
+public class WindowMultiPiston extends AbstractWindowSkeleton
 {
     /**
      * Resource suffix of the multipiston GUI.
@@ -121,14 +121,13 @@ public class Windowmultipiston extends AbstractWindowSkeleton
      */
     private final TextField inputSpeed;
 
-    
-    
+
     /**
      * The constructor called before opening this window.
      *
      * @param pos the position of the TileEntity which this window belogs to.
      */
-    public Windowmultipiston(@Nullable final BlockPos pos)
+    public WindowMultiPiston(@Nullable final BlockPos pos)
     {
         super(MOD_ID + MULTI_BLOCK_RESOURCE_SUFFIX);
         this.pos = pos;
@@ -313,7 +312,7 @@ public class Windowmultipiston extends AbstractWindowSkeleton
             ((TileEntityMultiPiston) block).setDirection(facing);
         }
 
-        Network.getNetwork().sendToServer(new multipistonChangeMessage(pos, facing, output, range, speed));
+        Network.getNetwork().sendToServer(new MultiPistonChangeMessage(pos, facing, output, range, speed));
         close();
     }
 

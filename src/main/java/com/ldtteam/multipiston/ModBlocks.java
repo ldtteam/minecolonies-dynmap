@@ -1,6 +1,7 @@
-package com.ldtteam.multiblock;
+package com.ldtteam.multipiston;
 
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.fmllegacy.RegistryObject;
@@ -9,14 +10,14 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.function.Supplier;
 
-import static com.ldtteam.multiblock.MultiPiston.MOD_ID;
+import static com.ldtteam.multipiston.MultiPiston.MOD_ID;
 
 public class ModBlocks
 {
-    private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MOD_ID);
-    private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MOD_ID);
+    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MOD_ID);
+    public static final     DeferredRegister<Item>  ITEMS  = DeferredRegister.create(ForgeRegistries.ITEMS, MOD_ID);
 
-    public static final RegistryObject<MultiBlock>  multiBlock = register("multiblock", MultiBlock::new);
+    public static final RegistryObject<MultiPistonBlock> multipiston = register("multipistonblock", MultiPistonBlock::new);
 
     /**
      * Utility shorthand to register blocks using the deferred registry
@@ -28,7 +29,7 @@ public class ModBlocks
     public static <B extends Block> RegistryObject<B> register(String name, Supplier<B> block)
     {
         RegistryObject<B> registered = BLOCKS.register(name.toLowerCase(), block);
-        ITEMS.register(name.toLowerCase(), () -> new BlockItem(registered.get(), new Item.Properties()));
+        ITEMS.register(name.toLowerCase(), () -> new BlockItem(registered.get(), new Item.Properties().tab(CreativeModeTab.TAB_REDSTONE)));
         return registered;
     }
 }

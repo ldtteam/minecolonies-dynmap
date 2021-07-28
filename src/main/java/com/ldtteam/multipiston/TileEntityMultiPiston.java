@@ -1,4 +1,4 @@
-package com.ldtteam.multiblock;
+package com.ldtteam.multipiston;
 
 import com.google.common.primitives.Ints;
 import net.minecraft.core.BlockPos;
@@ -24,12 +24,12 @@ import java.util.List;
 import static net.minecraft.core.Direction.*;
 
 /**
- * This Class is about the MultiBlock TileEntity which takes care of pushing others around (In a non mean way).
+ * This Class is about the multipiston TileEntity which takes care of pushing others around (In a non mean way).
  */
-public class TileEntityMultiBlock extends BlockEntity
+public class TileEntityMultiPiston extends BlockEntity
 {
     /**
-     * NBT tag constants for MultiBlock tileEntities.
+     * NBT tag constants for multipiston tileEntities.
      */
     public static final String TAG_INPUT            = "input";
     public static final String TAG_RANGE            = "range";
@@ -110,13 +110,13 @@ public class TileEntityMultiBlock extends BlockEntity
     private int ticksPassed = 0;
 
     /**
-     * Speed of the multiblock, max 3, min 1.
+     * Speed of the multipiston, max 3, min 1.
      */
     private int speed = 2;
 
-    public TileEntityMultiBlock(final BlockPos pos, final BlockState state)
+    public TileEntityMultiPiston(final BlockPos pos, final BlockState state)
     {
-        super(ModTileEntities.MULTIBLOCK, pos, state);
+        super(ModTileEntities.multipiston.get(), pos, state);
     }
 
     /**
@@ -147,13 +147,16 @@ public class TileEntityMultiBlock extends BlockEntity
     }
 
     /**
-     * Our personal ticking action.
+     * Static tick method.
      */
-    public static void tick(Level level, final BlockPos pos, final BlockState state, TileEntityMultiBlock te)
+    public static void tick(final Level level, final BlockPos pos, final BlockState state, final TileEntityMultiPiston te)
     {
         te.tick();
     }
 
+    /**
+     * Local tick method.
+     */
     public void tick()
     {
         if (level == null || level.isClientSide)
@@ -223,7 +226,7 @@ public class TileEntityMultiBlock extends BlockEntity
                     }
                 }
             }
-            level.playSound((Player) null,
+            level.playSound(null,
               worldPosition,
               SoundEvents.PISTON_EXTEND,
               SoundSource.BLOCKS,
@@ -264,7 +267,7 @@ public class TileEntityMultiBlock extends BlockEntity
     /**
      * Our own mirror method.
      * @param mirrorIn the incoming mirror.
-     * todo: test how we can solve this.
+     * todo: PR a mirror blockstate method to forge
      */
     public void mirror(final Mirror mirrorIn)
     {

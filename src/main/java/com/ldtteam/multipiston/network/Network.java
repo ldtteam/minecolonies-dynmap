@@ -1,4 +1,4 @@
-package com.ldtteam.multiblock.network;
+package com.ldtteam.multipiston.network;
 
 /**
  * Network channel holder.
