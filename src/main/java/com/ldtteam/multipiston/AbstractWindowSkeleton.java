@@ -1,9 +1,10 @@
 package com.ldtteam.multipiston;
 
-import com.ldtteam.blockui.Log;
 import com.ldtteam.blockui.controls.Button;
 import com.ldtteam.blockui.controls.ButtonHandler;
-import com.ldtteam.blockui.views.Window;
+import com.ldtteam.blockui.mod.Log;
+import com.ldtteam.blockui.views.BOWindow;
+import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -12,7 +13,7 @@ import java.util.function.Consumer;
 /**
  * Manage windows and their events.
  */
-public abstract class AbstractWindowSkeleton extends Window implements ButtonHandler
+public abstract class AbstractWindowSkeleton extends BOWindow implements ButtonHandler
 {
     @NotNull
     private final HashMap<String, Consumer<Button>> buttons;
@@ -24,7 +25,7 @@ public abstract class AbstractWindowSkeleton extends Window implements ButtonHan
      */
     public AbstractWindowSkeleton(final String resource)
     {
-        super(resource);
+        super(new ResourceLocation(resource));
 
         buttons = new HashMap<>();
     }

@@ -1,10 +1,10 @@
 package com.ldtteam.multipiston;
 
-import com.ldtteam.blockui.Log;
 import com.ldtteam.blockui.Pane;
 import com.ldtteam.blockui.controls.Button;
 import com.ldtteam.blockui.controls.ButtonImage;
 import com.ldtteam.blockui.controls.TextField;
+import com.ldtteam.blockui.mod.Log;
 import com.ldtteam.blockui.views.View;
 import com.ldtteam.multipiston.network.MultiPistonChangeMessage;
 import com.ldtteam.multipiston.network.Network;
@@ -43,7 +43,7 @@ public class WindowMultiPiston extends AbstractWindowSkeleton
     /**
      * Pre resource string.
      */
-    private static final String RES_STRING = "textures/gui/buildtool/%s.png";
+    private static final String RES_STRING = "textures/gui/%s.png";
 
     /**
      * Green String for selected left click.
@@ -175,24 +175,24 @@ public class WindowMultiPiston extends AbstractWindowSkeleton
         switch (oldFacing)
         {
             case DOWN:
-                findPaneOfTypeByID(BUTTON_DOWN, ButtonImage.class).setImage(new ResourceLocation(MOD_ID, String.format(RES_STRING, BUTTON_DOWN)));
+                findPaneOfTypeByID(BUTTON_DOWN, ButtonImage.class).setImage(new ResourceLocation(MOD_ID, String.format(RES_STRING, BUTTON_DOWN)), false);
                 break;
             case NORTH:
                 findPaneOfTypeByID(BUTTON_FORWARD, ButtonImage.class)
-                    .setImage(new ResourceLocation(MOD_ID, String.format(RES_STRING, BUTTON_FORWARD)));
+                    .setImage(new ResourceLocation(MOD_ID, String.format(RES_STRING, BUTTON_FORWARD)), false);
                 break;
             case SOUTH:
                 findPaneOfTypeByID(BUTTON_BACKWARD, ButtonImage.class)
-                    .setImage(new ResourceLocation(MOD_ID, String.format(RES_STRING, BUTTON_BACKWARD)));
+                    .setImage(new ResourceLocation(MOD_ID, String.format(RES_STRING, BUTTON_BACKWARD)), false);
                 break;
             case EAST:
-                findPaneOfTypeByID(BUTTON_RIGHT, ButtonImage.class).setImage(new ResourceLocation(MOD_ID, String.format(RES_STRING, BUTTON_RIGHT)));
+                findPaneOfTypeByID(BUTTON_RIGHT, ButtonImage.class).setImage(new ResourceLocation(MOD_ID, String.format(RES_STRING, BUTTON_RIGHT)), false);
                 break;
             case WEST:
-                findPaneOfTypeByID(BUTTON_LEFT, ButtonImage.class).setImage(new ResourceLocation(MOD_ID, String.format(RES_STRING, BUTTON_LEFT)));
+                findPaneOfTypeByID(BUTTON_LEFT, ButtonImage.class).setImage(new ResourceLocation(MOD_ID, String.format(RES_STRING, BUTTON_LEFT)), false);
                 break;
             default:
-                findPaneOfTypeByID(BUTTON_UP, ButtonImage.class).setImage(new ResourceLocation(MOD_ID, String.format(RES_STRING, BUTTON_UP)));
+                findPaneOfTypeByID(BUTTON_UP, ButtonImage.class).setImage(new ResourceLocation(MOD_ID, String.format(RES_STRING, BUTTON_UP)), false);
                 break;
         }
 
@@ -201,26 +201,26 @@ public class WindowMultiPiston extends AbstractWindowSkeleton
         {
             case DOWN:
                 findPaneOfTypeByID(BUTTON_DOWN, ButtonImage.class)
-                    .setImage(new ResourceLocation(MOD_ID, String.format(RES_STRING, BUTTON_DOWN + color)));
+                    .setImage(new ResourceLocation(MOD_ID, String.format(RES_STRING, BUTTON_DOWN + color)), false);
                 break;
             case NORTH:
                 findPaneOfTypeByID(BUTTON_FORWARD, ButtonImage.class)
-                    .setImage(new ResourceLocation(MOD_ID, String.format(RES_STRING, BUTTON_FORWARD + color)));
+                    .setImage(new ResourceLocation(MOD_ID, String.format(RES_STRING, BUTTON_FORWARD + color)), false);
                 break;
             case SOUTH:
                 findPaneOfTypeByID(BUTTON_BACKWARD, ButtonImage.class)
-                    .setImage(new ResourceLocation(MOD_ID, String.format(RES_STRING, BUTTON_BACKWARD + color)));
+                    .setImage(new ResourceLocation(MOD_ID, String.format(RES_STRING, BUTTON_BACKWARD + color)), false);
                 break;
             case EAST:
                 findPaneOfTypeByID(BUTTON_RIGHT, ButtonImage.class)
-                    .setImage(new ResourceLocation(MOD_ID, String.format(RES_STRING, BUTTON_RIGHT + color)));
+                    .setImage(new ResourceLocation(MOD_ID, String.format(RES_STRING, BUTTON_RIGHT + color)), false);
                 break;
             case WEST:
                 findPaneOfTypeByID(BUTTON_LEFT, ButtonImage.class)
-                    .setImage(new ResourceLocation(MOD_ID, String.format(RES_STRING, BUTTON_LEFT + color)));
+                    .setImage(new ResourceLocation(MOD_ID, String.format(RES_STRING, BUTTON_LEFT + color)), false);
                 break;
             default:
-                findPaneOfTypeByID(BUTTON_UP, ButtonImage.class).setImage(new ResourceLocation(MOD_ID, String.format(RES_STRING, BUTTON_UP + color)));
+                findPaneOfTypeByID(BUTTON_UP, ButtonImage.class).setImage(new ResourceLocation(MOD_ID, String.format(RES_STRING, BUTTON_UP + color)), false);
                 break;
         }
 
