@@ -147,14 +147,6 @@ public class TileEntityMultiPiston extends BlockEntity
     }
 
     /**
-     * Static tick method.
-     */
-    public static void tick(final Level level, final BlockPos pos, final BlockState state, final TileEntityMultiPiston te)
-    {
-        te.tick();
-    }
-
-    /**
      * Local tick method.
      */
     public void tick()

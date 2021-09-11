@@ -14,7 +14,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.BitSetDiscreteVoxelShape;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
@@ -92,7 +91,7 @@ public class MultiPistonBlock extends BaseEntityBlock
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull final Level level, @NotNull final BlockState state, @NotNull final BlockEntityType<T> type)
     {
-        return createTickerHelper(type, ModTileEntities.multipiston.get(), TileEntityMultiPiston::tick);
+        return createTickerHelper(type, ModTileEntities.multipiston.get(), (l, pos, s, te) -> te.tick());
     }
 
     @NotNull
