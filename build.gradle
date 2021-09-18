@@ -15,10 +15,15 @@ buildscript {
     }
 }
 
+configurations.all {
+    resolutionStrategy {
+        force 'cpw.mods:securejarhandler:0.9.50'
+    }
+}
+
 apply from: 'https://raw.githubusercontent.com/ldtteam/OperaPublicaCreator/main/gradle/mod.gradle'
 
 dependencies {
-    apiCompileOnly fg.deobf("com.ldtteam:blockui:${project.exactMinecraftVersion}-${project.blockUiVersion}")
+    compileOnly fg.deobf("com.ldtteam:blockui:${project.exactMinecraftVersion}-${project.blockUiVersion}")
     implementation fg.deobf("com.ldtteam:blockui:${project.exactMinecraftVersion}-${project.blockUiVersion}")
-    runtimeOnly fg.deobf("com.ldtteam:blockui:${project.exactMinecraftVersion}-${project.blockUiVersion}")
 }
