@@ -62,3 +62,9 @@ Piston unlimited adds the multipiston block which allows you to move any block w
      versionRange="[0.0.20-ALPHA,)"
      ordering="AFTER"
      side="BOTH"
+[[dependencies.multipiston]]
+    modId="structurize"
+    mandatory=true
+    versionRange="[1.17.1-0.13.239-ALPHA, )"
+    ordering="AFTER"
+    side="BOTH"

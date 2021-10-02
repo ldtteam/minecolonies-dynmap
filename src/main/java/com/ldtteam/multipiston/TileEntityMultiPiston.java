@@ -1,6 +1,7 @@
 package com.ldtteam.multipiston;
 
 import com.google.common.primitives.Ints;
+import com.ldtteam.structurize.api.util.IRotatableBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -9,8 +10,6 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -26,7 +25,7 @@ import static net.minecraft.core.Direction.*;
 /**
  * This Class is about the multipiston TileEntity which takes care of pushing others around (In a non mean way).
  */
-public class TileEntityMultiPiston extends BlockEntity
+public class TileEntityMultiPiston extends BlockEntity implements IRotatableBlockEntity
 {
     /**
      * NBT tag constants for multipiston tileEntities.
@@ -185,7 +184,7 @@ public class TileEntityMultiPiston extends BlockEntity
                   || blockToMove.getPistonPushReaction() == PushReaction.IGNORE
                   || blockToMove.getPistonPushReaction() == PushReaction.DESTROY
                   || blockToMove.getPistonPushReaction() == PushReaction.BLOCK
-                  || blockToMove.getBlock() instanceof EntityBlock
+                  || (blockToMove.getBlock() instanceof EntityBlock && ! blockToMove.getBlock().getRegistryName().getNamespace().equals("domum_ornamentum"))
                   || blockToMove.getBlock() == Blocks.BEDROCK)
             {
                 progress++;
@@ -213,6 +212,20 @@ public class TileEntityMultiPiston extends BlockEntity
                             ((BucketPickup) tempState.getBlock()).pickupBlock(level, posToGo, tempState);
                         }
                         this.level.neighborChanged(posToGo, tempState.getBlock(), posToGo);
+
+                        if (tempState.getBlock() instanceof EntityBlock)
+                        {
+                            final BlockEntity blockEntity = level.getBlockEntity(posToGoFrom);
+                            if (blockEntity != null)
+                            {
+                                final CompoundTag tag = blockEntity.save(new CompoundTag());
+                                final BlockEntity resultEntity = level.getBlockEntity(posToGo);
+                                if (resultEntity != null)
+                                {
+                                    resultEntity.load(tag);
+                                }
+                            }
+                        }
 
                         level.removeBlock(posToGoFrom, false);
                     }
@@ -243,6 +256,7 @@ public class TileEntityMultiPiston extends BlockEntity
      * Our own rotate method.
      * @param rotationIn the incoming rotation.
      */
+    @Override
     public void rotate(final Rotation rotationIn)
     {
         if (output != UP && output != DOWN)
@@ -259,8 +273,8 @@ public class TileEntityMultiPiston extends BlockEntity
     /**
      * Our own mirror method.
      * @param mirrorIn the incoming mirror.
-     * todo: PR a mirror blockstate method to forge
      */
+    @Override
     public void mirror(final Mirror mirrorIn)
     {
         if (output != UP && output != DOWN)
