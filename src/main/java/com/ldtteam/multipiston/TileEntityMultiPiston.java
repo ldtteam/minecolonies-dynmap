@@ -218,7 +218,7 @@ public class TileEntityMultiPiston extends BlockEntity implements IRotatableBloc
                             final BlockEntity blockEntity = level.getBlockEntity(posToGoFrom);
                             if (blockEntity != null)
                             {
-                                final CompoundTag tag = blockEntity.save(new CompoundTag());
+                                final CompoundTag tag = blockEntity.saveWithId();
                                 final BlockEntity resultEntity = level.getBlockEntity(posToGo);
                                 if (resultEntity != null)
                                 {
@@ -399,11 +399,10 @@ public class TileEntityMultiPiston extends BlockEntity implements IRotatableBloc
         speed = compound.getInt(TAG_SPEED);
     }
 
-    @NotNull
     @Override
-    public CompoundTag save(@NotNull final CompoundTag compound)
+    public void saveAdditional(@NotNull final CompoundTag compound)
     {
-        super.save(compound);
+        super.saveAdditional(compound);
         compound.putInt(TAG_RANGE, range);
         compound.putInt(TAG_PROGRESS, progress);
         compound.putInt(TAG_DIRECTION, direction.ordinal());
@@ -413,8 +412,6 @@ public class TileEntityMultiPiston extends BlockEntity implements IRotatableBloc
             compound.putInt(TAG_OUTPUT_DIRECTION, output.ordinal());
         }
         compound.putInt(TAG_SPEED, speed);
-
-        return compound;
     }
 
     @Override
@@ -434,14 +431,14 @@ public class TileEntityMultiPiston extends BlockEntity implements IRotatableBloc
     public ClientboundBlockEntityDataPacket getUpdatePacket()
     {
         CompoundTag nbt = new CompoundTag();
-        this.save(nbt);
-        return new ClientboundBlockEntityDataPacket(this.getBlockPos(), 0, nbt);
+        this.saveAdditional(nbt);
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 
     @NotNull
     @Override
     public CompoundTag getUpdateTag()
     {
-        return save(new CompoundTag());
+        return saveWithId();
     }
 }
