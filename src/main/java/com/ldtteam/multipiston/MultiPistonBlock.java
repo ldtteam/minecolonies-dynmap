@@ -27,7 +27,7 @@ public class MultiPistonBlock extends BaseEntityBlock
     /**
      * The hardness this block has.
      */
-    private static final float BLOCK_HARDNESS = 0.0F;
+    private static final float BLOCK_HARDNESS = 1F;
 
     /**
      * The resistance this block has.
@@ -40,7 +40,7 @@ public class MultiPistonBlock extends BaseEntityBlock
      */
     public MultiPistonBlock()
     {
-        super(Properties.of(Material.WOOD).strength(BLOCK_HARDNESS, RESISTANCE));
+        super(Properties.of(Material.STONE).strength(BLOCK_HARDNESS, RESISTANCE));
     }
 
     /**
