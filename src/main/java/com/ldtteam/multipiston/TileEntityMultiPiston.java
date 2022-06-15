@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -184,7 +185,7 @@ public class TileEntityMultiPiston extends BlockEntity implements IRotatableBloc
                   || blockToMove.getPistonPushReaction() == PushReaction.IGNORE
                   || blockToMove.getPistonPushReaction() == PushReaction.DESTROY
                   || blockToMove.getPistonPushReaction() == PushReaction.BLOCK
-                  || (blockToMove.getBlock() instanceof EntityBlock && ! blockToMove.getBlock().getRegistryName().getNamespace().equals("domum_ornamentum"))
+                  || (blockToMove.getBlock() instanceof EntityBlock && !ForgeRegistries.BLOCKS.getKey(blockToMove.getBlock()).getNamespace().equals("domum_ornamentum"))
                   || blockToMove.getBlock() == Blocks.BEDROCK)
             {
                 progress++;
