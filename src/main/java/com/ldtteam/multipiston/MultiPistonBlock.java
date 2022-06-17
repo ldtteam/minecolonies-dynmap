@@ -40,7 +40,7 @@ public class MultiPistonBlock extends BaseEntityBlock
      */
     public MultiPistonBlock()
     {
-        super(Properties.of(Material.STONE).strength(BLOCK_HARDNESS, RESISTANCE));
+        super(Properties.of(Material.STONE).strength(BLOCK_HARDNESS, RESISTANCE).isRedstoneConductor((a,b,c) -> true));
     }
 
     /**
