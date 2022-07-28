@@ -42,7 +42,7 @@ Piston unlimited adds the multipiston block which allows you to move any block w
     # Does this dependency have to exist - if not, ordering below must be specified
     mandatory=true #mandatory
     # The version range of the dependency
-    versionRange="[38,)" #mandatory
+    versionRange="[41.0.94,)" #mandatory
     # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
     ordering="NONE"
     # Side this dependency is applied on - BOTH, CLIENT or SERVER
@@ -58,12 +58,12 @@ Piston unlimited adds the multipiston block which allows you to move any block w
 [[dependencies.multipiston]]
      modId="blockui"
      mandatory=true
-     versionRange="[0.0.52-ALPHA,)"
+     versionRange="[0.0.59-ALPHA,)"
      ordering="AFTER"
      side="BOTH"
 [[dependencies.multipiston]]
     modId="structurize"
     mandatory=true
-    versionRange="[1.19-1.0.415-ALPHA, )"
+    versionRange="[1.19-1.0.420-ALPHA, )"
     ordering="AFTER"
     side="BOTH"

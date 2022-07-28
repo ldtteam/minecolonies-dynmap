@@ -9,7 +9,7 @@ import static com.ldtteam.multipiston.MultiPiston.MOD_ID;
 
 public final class ModTileEntities
 {
-    public static final DeferredRegister<BlockEntityType<?>> TILE_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, MOD_ID);
+    public static final DeferredRegister<BlockEntityType<?>> TILE_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, MOD_ID);
 
     private ModTileEntities() { /* prevent construction */ }
 
