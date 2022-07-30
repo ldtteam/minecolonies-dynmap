@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -57,6 +58,13 @@ public class MultiPistonBlock extends BaseEntityBlock
             new WindowMultiPiston(pos).open();
         }
         return InteractionResult.SUCCESS;
+    }
+
+    @NotNull
+    @Override
+    public VoxelShape getCollisionShape(final BlockState state, final BlockGetter level, final BlockPos pos, final CollisionContext ctx)
+    {
+        return Shapes.block();
     }
 
     @Override
