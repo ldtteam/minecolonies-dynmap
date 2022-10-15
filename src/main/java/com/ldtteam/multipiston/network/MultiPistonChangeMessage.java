@@ -19,7 +19,7 @@ public class MultiPistonChangeMessage implements IMessage
     /**
      * The direction it should push or pull rom.
      */
-    private Direction direction;
+    private Direction input;
 
     /**
      * The direction it should push or pull rom.
@@ -52,15 +52,15 @@ public class MultiPistonChangeMessage implements IMessage
     /**
      * Constructor to create the 
      * @param pos the position of the block.
-     * @param facing the way it should be facing.
+     * @param input the way it inputs from.
      * @param output the way it will output to.
      * @param range the range it should work.
      * @param speed the speed it should have.
      */
-    public MultiPistonChangeMessage(final BlockPos pos, final Direction facing, final Direction output, final int range, final int speed)
+    public MultiPistonChangeMessage(final BlockPos pos, final Direction input, final Direction output, final int range, final int speed)
     {
         this.pos = pos;
-        this.direction = facing;
+        this.input = input;
         this.range = range;
         this.output = output;
         this.speed = speed;
@@ -70,7 +70,7 @@ public class MultiPistonChangeMessage implements IMessage
     public void toBytes(final FriendlyByteBuf buf)
     {
         buf.writeBlockPos(pos);
-        buf.writeInt(direction.ordinal());
+        buf.writeInt(input.ordinal());
         buf.writeInt(output.ordinal());
         buf.writeInt(range);
         buf.writeInt(speed);
@@ -80,7 +80,7 @@ public class MultiPistonChangeMessage implements IMessage
     public void fromBytes(final FriendlyByteBuf buf)
     {
         this.pos = buf.readBlockPos();
-        this.direction = Direction.values()[buf.readInt()];
+        this.input = Direction.values()[buf.readInt()];
         this.output = Direction.values()[buf.readInt()];
         this.range = buf.readInt();
         this.speed = buf.readInt();
@@ -100,7 +100,7 @@ public class MultiPistonChangeMessage implements IMessage
         final BlockEntity entity = world.getBlockEntity(pos);
         if (entity instanceof TileEntityMultiPiston)
         {
-            ((TileEntityMultiPiston) entity).setDirection(direction);
+            ((TileEntityMultiPiston) entity).setInput(input);
             ((TileEntityMultiPiston) entity).setOutput(output);
             ((TileEntityMultiPiston) entity).setRange(range);
             ((TileEntityMultiPiston) entity).setSpeed(speed);

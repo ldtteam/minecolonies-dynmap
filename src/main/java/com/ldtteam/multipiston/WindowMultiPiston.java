@@ -1,19 +1,20 @@
 package com.ldtteam.multipiston;
 
-import com.ldtteam.blockui.Pane;
-import com.ldtteam.blockui.controls.Button;
-import com.ldtteam.blockui.controls.ButtonImage;
+import com.google.common.collect.*;
 import com.ldtteam.blockui.controls.TextField;
 import com.ldtteam.blockui.mod.Log;
-import com.ldtteam.blockui.views.View;
+import com.ldtteam.blockui.views.DropDownList;
 import com.ldtteam.multipiston.network.MultiPistonChangeMessage;
 import com.ldtteam.multipiston.network.Network;
+import com.ldtteam.structurize.api.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 import static com.ldtteam.multipiston.MultiPiston.MOD_ID;
 import static com.ldtteam.multipiston.TileEntityMultiPiston.DEFAULT_RANGE;
@@ -26,9 +27,31 @@ import static net.minecraft.core.Direction.*;
 public class WindowMultiPiston extends AbstractWindowSkeleton
 {
     /**
-     * Resource suffix of the multipiston GUI.
+     * Different colors for the input lists.
      */
-    public static final String MULTI_BLOCK_RESOURCE_SUFFIX = ":gui/windowmultipiston.xml";
+    private static final List<String> COLORS = ImmutableList.of(
+      "Yellow",
+      "Orange",
+      "Blue",
+      "Green",
+      "Red",
+      "Purple");
+
+    private static final BiMap<Direction, String> COLOR_MAP = HashBiMap.create(6);
+    static
+    {
+        COLOR_MAP.put(UP, "Yellow");
+        COLOR_MAP.put(DOWN, "Orange");
+        COLOR_MAP.put(NORTH, "Blue");
+        COLOR_MAP.put(EAST, "Green");
+        COLOR_MAP.put(SOUTH, "Red");
+        COLOR_MAP.put(WEST, "Purple");
+    }
+
+      /**
+       * Resource suffix of the multipiston GUI.
+       */
+    public static final  String MULTI_BLOCK_RESOURCE_SUFFIX = ":gui/windowmultipiston.xml";
 
     /**
      * Name of the input range field.
@@ -41,60 +64,9 @@ public class WindowMultiPiston extends AbstractWindowSkeleton
     public static final String INPUT_SPEED = "speed";
 
     /**
-     * Pre resource string.
-     */
-    private static final String RES_STRING = "textures/gui/%s.png";
-
-    /**
-     * Green String for selected left click.
-     */
-    private static final String GREEN_POS = "_green";
-
-    /**
-     * Red String for selected right click.
-     */
-    private static final String RED_POS = "_red";
-
-    /**
      * This button will send a packet to the server telling it to place this hut/decoration.
      */
     public static final String BUTTON_CONFIRM = "confirm";
-
-    /**
-     * This button will remove the currently rendered structure.
-     */
-    public static final String BUTTON_CANCEL = "cancel";
-
-    /**
-     * Id of the up button in the GUI.
-     */
-    public static final String BUTTON_UP = "plus";
-
-    /**
-     * Id of the up button in the GUI.
-     */
-    public static final String BUTTON_DOWN = "minus";
-
-    /**
-     * Move the structure preview left.
-     */
-    public static final String BUTTON_LEFT = "left";
-
-    /**
-     * Move the structure preview right.
-     */
-    public static final String BUTTON_RIGHT = "right";
-
-    /**
-     * Move the structure preview forward.
-     */
-    public static final String BUTTON_FORWARD = "up";
-
-    /**
-     * Move the structure preview back.
-     */
-    public static final String BUTTON_BACKWARD = "down";
-
 
     /**
      * Position of the multipiston.
@@ -104,7 +76,7 @@ public class WindowMultiPiston extends AbstractWindowSkeleton
     /**
      * The direction it is facing.
      */
-    private Direction facing = UP;
+    private Direction input = UP;
 
     /**
      * The output direction.
@@ -121,6 +93,15 @@ public class WindowMultiPiston extends AbstractWindowSkeleton
      */
     private final TextField inputSpeed;
 
+    /**
+     * Drop down list for style.
+     */
+    private DropDownList outputDropdown;
+
+    /**
+     * Drop down list for name style.
+     */
+    private DropDownList inputDropdown;
 
     /**
      * The constructor called before opening this window.
@@ -133,20 +114,8 @@ public class WindowMultiPiston extends AbstractWindowSkeleton
         this.pos = pos;
         inputRange = findPaneOfTypeByID(INPUT_RANGE_NAME, TextField.class);
         inputSpeed = findPaneOfTypeByID(INPUT_SPEED, TextField.class);
-        this.init();
-    }
-
-    private void init()
-    {
-        // Register all necessary buttons with the window.
         registerButton(BUTTON_CONFIRM, this::confirmClicked);
-        registerButton(BUTTON_CANCEL, this::cancelClicked);
-        registerButton(BUTTON_LEFT, this::moveLeftClicked);
-        registerButton(BUTTON_RIGHT, this::moveRightClicked);
-        registerButton(BUTTON_UP, this::moveUpClicked);
-        registerButton(BUTTON_DOWN, this::moveDownClicked);
-        registerButton(BUTTON_BACKWARD, this::moveBackClicked);
-        registerButton(BUTTON_FORWARD, this::moveForwardClicked);
+        initDropDowns();
     }
 
     /**
@@ -159,132 +128,106 @@ public class WindowMultiPiston extends AbstractWindowSkeleton
         final BlockEntity block = Minecraft.getInstance().level.getBlockEntity(pos);
         if (block instanceof TileEntityMultiPiston)
         {
+            initDropDowns();
+
             inputRange.setText(Integer.toString(((TileEntityMultiPiston) block).getRange()));
             inputSpeed.setText(Integer.toString(((TileEntityMultiPiston) block).getSpeed()));
-            final Direction dir = ((TileEntityMultiPiston) block).getDirection();
-            final Direction out = ((TileEntityMultiPiston) block).getOutput();
-            enable(dir, dir, false);
-            enable(out, out, true);
+            input = ((TileEntityMultiPiston) block).getInput();
+            output = ((TileEntityMultiPiston) block).getOutput();
+
+            this.inputDropdown.setSelectedIndex(COLORS.indexOf(COLOR_MAP.get(input)));
+            this.outputDropdown.setSelectedIndex(COLORS.indexOf(COLOR_MAP.get(output)));
+
+
             return;
         }
         close();
     }
 
-    private void enable(final Direction oldFacing, final Direction newFacing, final boolean rightClick)
+
+    /**
+     * Initialise the previous/next and drop down list for style.
+     */
+    private void initDropDowns()
     {
-        switch (oldFacing)
+        outputDropdown = findPaneOfTypeByID("output", DropDownList.class);
+        outputDropdown.setHandler(this::toggleOutput);
+        outputDropdown.setDataProvider(new DropDownList.DataProvider()
         {
-            case DOWN:
-                findPaneOfTypeByID(BUTTON_DOWN, ButtonImage.class).setImage(new ResourceLocation(MOD_ID, String.format(RES_STRING, BUTTON_DOWN)), false);
-                break;
-            case NORTH:
-                findPaneOfTypeByID(BUTTON_FORWARD, ButtonImage.class)
-                    .setImage(new ResourceLocation(MOD_ID, String.format(RES_STRING, BUTTON_FORWARD)), false);
-                break;
-            case SOUTH:
-                findPaneOfTypeByID(BUTTON_BACKWARD, ButtonImage.class)
-                    .setImage(new ResourceLocation(MOD_ID, String.format(RES_STRING, BUTTON_BACKWARD)), false);
-                break;
-            case EAST:
-                findPaneOfTypeByID(BUTTON_RIGHT, ButtonImage.class).setImage(new ResourceLocation(MOD_ID, String.format(RES_STRING, BUTTON_RIGHT)), false);
-                break;
-            case WEST:
-                findPaneOfTypeByID(BUTTON_LEFT, ButtonImage.class).setImage(new ResourceLocation(MOD_ID, String.format(RES_STRING, BUTTON_LEFT)), false);
-                break;
-            default:
-                findPaneOfTypeByID(BUTTON_UP, ButtonImage.class).setImage(new ResourceLocation(MOD_ID, String.format(RES_STRING, BUTTON_UP)), false);
-                break;
-        }
+            @Override
+            public int getElementCount()
+            {
+                return COLORS.size();
+            }
 
-        final String color = rightClick ? RED_POS : GREEN_POS;
-        switch (newFacing)
-        {
-            case DOWN:
-                findPaneOfTypeByID(BUTTON_DOWN, ButtonImage.class)
-                    .setImage(new ResourceLocation(MOD_ID, String.format(RES_STRING, BUTTON_DOWN + color)), false);
-                break;
-            case NORTH:
-                findPaneOfTypeByID(BUTTON_FORWARD, ButtonImage.class)
-                    .setImage(new ResourceLocation(MOD_ID, String.format(RES_STRING, BUTTON_FORWARD + color)), false);
-                break;
-            case SOUTH:
-                findPaneOfTypeByID(BUTTON_BACKWARD, ButtonImage.class)
-                    .setImage(new ResourceLocation(MOD_ID, String.format(RES_STRING, BUTTON_BACKWARD + color)), false);
-                break;
-            case EAST:
-                findPaneOfTypeByID(BUTTON_RIGHT, ButtonImage.class)
-                    .setImage(new ResourceLocation(MOD_ID, String.format(RES_STRING, BUTTON_RIGHT + color)), false);
-                break;
-            case WEST:
-                findPaneOfTypeByID(BUTTON_LEFT, ButtonImage.class)
-                    .setImage(new ResourceLocation(MOD_ID, String.format(RES_STRING, BUTTON_LEFT + color)), false);
-                break;
-            default:
-                findPaneOfTypeByID(BUTTON_UP, ButtonImage.class).setImage(new ResourceLocation(MOD_ID, String.format(RES_STRING, BUTTON_UP + color)), false);
-                break;
-        }
+            @Override
+            public String getLabel(final int index)
+            {
+                return COLORS.get(index);
+            }
+        });
 
-        if (rightClick)
+        inputDropdown = findPaneOfTypeByID("input", DropDownList.class);
+        inputDropdown.setHandler(this::toggleInput);
+        inputDropdown.setDataProvider(new DropDownList.DataProvider()
         {
-            output = newFacing;
+            @Override
+            public int getElementCount()
+            {
+                return COLORS.size();
+            }
+
+            @Override
+            public String getLabel(final int index)
+            {
+                return COLORS.get(index);
+            }
+        });
+    }
+
+    /**
+     * Toggle the dropdownlist with the selected index to change the texture of the colonists.
+     *
+     * @param dropDownList the toggle dropdown list.
+     */
+    private void toggleInput(final DropDownList dropDownList)
+    {
+        Direction tempInput = COLOR_MAP.inverse().get(COLORS.get(dropDownList.getSelectedIndex()));
+        if (tempInput.equals(output))
+        {
+            Utils.playErrorSound(Minecraft.getInstance().player);
+            Minecraft.getInstance().player.displayClientMessage(Component.translatable("com.ldtteam.multipiston.equalpos"), false);
+            this.inputDropdown.setSelectedIndex(COLORS.indexOf(COLOR_MAP.get(input)));
         }
         else
         {
-            facing = newFacing;
+            input = tempInput;
+        }
+    }
+
+    /**
+     * Toggle the dropdownlist with the selected index to change the texture of the colonists.
+     *
+     * @param dropDownList the toggle dropdown list.
+     */
+    private void toggleOutput(final DropDownList dropDownList)
+    {
+        Direction tempOutput = COLOR_MAP.inverse().get(COLORS.get(dropDownList.getSelectedIndex()));
+        if (tempOutput.equals(input))
+        {
+            Utils.playErrorSound(Minecraft.getInstance().player);
+            Minecraft.getInstance().player.displayClientMessage(Component.translatable("com.ldtteam.multipiston.equalpos"), false);
+            this.outputDropdown.setSelectedIndex(COLORS.indexOf(COLOR_MAP.get(output)));
+        }
+        else
+        {
+            output = tempOutput;
         }
     }
 
     /*
      * ---------------- Button Handling -----------------
      */
-
-    /**
-     * Move the schematic up.
-     */
-    private void moveUpClicked()
-    {
-        enable(facing, UP, false);
-    }
-
-    /**
-     * Move the structure down.
-     */
-    private void moveDownClicked()
-    {
-        enable(facing, DOWN, false);
-    }
-
-    /**
-     * Move the structure left.
-     */
-    private void moveLeftClicked()
-    {
-        enable(facing, WEST, false);
-    }
-
-    /**
-     * Move the structure forward.
-     */
-    private void moveForwardClicked()
-    {
-        enable(facing, NORTH, false);
-    }
-
-    /**
-     * Move the structure back.
-     */
-    private void moveBackClicked()
-    {
-        enable(facing, SOUTH, false);
-    }
-
-    /**
-     * Move the structure right.
-     */
-    private void moveRightClicked()
-    {
-        enable(facing, EAST, false);
-    }
 
     /**
      * Send a packet telling the server to place the current structure.
@@ -309,59 +252,10 @@ public class WindowMultiPiston extends AbstractWindowSkeleton
             ((TileEntityMultiPiston) block).setSpeed(speed);
             ((TileEntityMultiPiston) block).setRange(range);
             ((TileEntityMultiPiston) block).setOutput(output);
-            ((TileEntityMultiPiston) block).setDirection(facing);
+            ((TileEntityMultiPiston) block).setInput(input);
         }
 
-        Network.getNetwork().sendToServer(new MultiPistonChangeMessage(pos, facing, output, range, speed));
-        close();
-    }
-
-    @Override
-    public boolean rightClick(final double mx, final double my)
-    {
-        Pane pane = this.findPaneForClick(mx, my);
-        if (pane instanceof View)
-        {
-            pane = ((View) pane).findPaneForClick(mx, my);
-        }
-        if (pane instanceof Button && pane.isEnabled())
-        {
-            final Direction newFacing;
-            switch (pane.getID())
-            {
-                case BUTTON_UP:
-                    newFacing = UP;
-                    break;
-                case BUTTON_DOWN:
-                    newFacing = DOWN;
-                    break;
-                case BUTTON_FORWARD:
-                    newFacing = NORTH;
-                    break;
-                case BUTTON_BACKWARD:
-                    newFacing = SOUTH;
-                    break;
-                case BUTTON_RIGHT:
-                    newFacing = EAST;
-                    break;
-                case BUTTON_LEFT:
-                    newFacing = WEST;
-                    break;
-                default:
-                    newFacing = UP;
-                    break;
-            }
-            enable(output, newFacing, true);
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Cancel the current structure.
-     */
-    private void cancelClicked()
-    {
+        Network.getNetwork().sendToServer(new MultiPistonChangeMessage(pos, input, output, range, speed));
         close();
     }
 }

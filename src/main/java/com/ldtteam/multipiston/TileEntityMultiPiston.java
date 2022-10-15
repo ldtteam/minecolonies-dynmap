@@ -82,7 +82,7 @@ public class TileEntityMultiPiston extends BlockEntity implements IRotatableBloc
     /**
      * The direction it should push or pull rom.
      */
-    private Direction direction = UP;
+    private Direction input = UP;
 
     /**
      * The output direction.
@@ -140,7 +140,7 @@ public class TileEntityMultiPiston extends BlockEntity implements IRotatableBloc
             }
             else
             {
-                currentDirection = direction;
+                currentDirection = input;
             }
             progress = 0;
         }
@@ -176,7 +176,7 @@ public class TileEntityMultiPiston extends BlockEntity implements IRotatableBloc
      */
     public void handleTick()
     {
-        final Direction currentOutPutDirection = currentDirection == direction ? output : direction;
+        final Direction currentOutPutDirection = currentDirection == input ? output : input;
 
         if (progress < range)
         {
@@ -265,9 +265,9 @@ public class TileEntityMultiPiston extends BlockEntity implements IRotatableBloc
             output = rotationIn.rotate(output);
         }
 
-        if (direction != UP && direction != DOWN)
+        if (input != UP && input != DOWN)
         {
-            direction = rotationIn.rotate(direction);
+            input = rotationIn.rotate(input);
         }
     }
 
@@ -283,9 +283,9 @@ public class TileEntityMultiPiston extends BlockEntity implements IRotatableBloc
             output = mirrorIn.mirror(output);
         }
 
-        if (direction != UP && direction != DOWN)
+        if (input != UP && input != DOWN)
         {
-            direction = mirrorIn.mirror(direction);
+            input = mirrorIn.mirror(input);
         }
     }
 
@@ -304,9 +304,9 @@ public class TileEntityMultiPiston extends BlockEntity implements IRotatableBloc
      *
      * @return the EnumFacing.
      */
-    public Direction getDirection()
+    public Direction getInput()
     {
-        return direction;
+        return input;
     }
 
     /**
@@ -324,9 +324,9 @@ public class TileEntityMultiPiston extends BlockEntity implements IRotatableBloc
      *
      * @param direction the direction.
      */
-    public void setDirection(final Direction direction)
+    public void setInput(final Direction direction)
     {
-        this.direction = direction;
+        this.input = direction;
     }
 
     /**
@@ -387,7 +387,7 @@ public class TileEntityMultiPiston extends BlockEntity implements IRotatableBloc
 
         range = compound.getInt(TAG_RANGE);
         this.progress = compound.getInt(TAG_PROGRESS);
-        direction = values()[compound.getInt(TAG_DIRECTION)];
+        input = values()[compound.getInt(TAG_DIRECTION)];
         on = compound.getBoolean(TAG_INPUT);
         if (compound.getAllKeys().contains(TAG_OUTPUT_DIRECTION))
         {
@@ -395,7 +395,7 @@ public class TileEntityMultiPiston extends BlockEntity implements IRotatableBloc
         }
         else
         {
-            output = direction.getOpposite();
+            output = input.getOpposite();
         }
         speed = compound.getInt(TAG_SPEED);
     }
@@ -406,7 +406,7 @@ public class TileEntityMultiPiston extends BlockEntity implements IRotatableBloc
         super.saveAdditional(compound);
         compound.putInt(TAG_RANGE, range);
         compound.putInt(TAG_PROGRESS, progress);
-        compound.putInt(TAG_DIRECTION, direction.ordinal());
+        compound.putInt(TAG_DIRECTION, input.ordinal());
         compound.putBoolean(TAG_INPUT, on);
         if (output != null)
         {

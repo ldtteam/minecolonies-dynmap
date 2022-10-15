@@ -8,6 +8,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.Locale;
 import java.util.function.Supplier;
 
 import static com.ldtteam.multipiston.MultiPiston.MOD_ID;
@@ -28,8 +29,8 @@ public class ModBlocks
      */
     public static <B extends Block> RegistryObject<B> register(String name, Supplier<B> block)
     {
-        RegistryObject<B> registered = BLOCKS.register(name.toLowerCase(), block);
-        ITEMS.register(name.toLowerCase(), () -> new BlockItem(registered.get(), new Item.Properties().tab(CreativeModeTab.TAB_REDSTONE)));
+        RegistryObject<B> registered = BLOCKS.register(name.toLowerCase(Locale.ENGLISH), block);
+        ITEMS.register(name.toLowerCase(Locale.ENGLISH), () -> new BlockItem(registered.get(), new Item.Properties().tab(CreativeModeTab.TAB_REDSTONE)));
         return registered;
     }
 }

@@ -20,11 +20,11 @@ apply from: 'https://raw.githubusercontent.com/ldtteam/OperaPublicaCreator/main/
 dependencies {
     //implementation fg.deobf("mezz.jei:jei-${project.minecraftVersion}:${project.jei_version}")
 
-    compileOnly fg.deobf("com.ldtteam:blockui:${project.exactMinecraftVersion}-${project.blockUiVersion}")
-    implementation fg.deobf("com.ldtteam:blockui:${project.exactMinecraftVersion}-${project.blockUiVersion}")
+    compileOnly fg.deobf("com.ldtteam:blockui:${project.blockUiVersion}")
+    implementation fg.deobf("com.ldtteam:blockui:${project.blockUiVersion}")
 
     implementation fg.deobf("com.ldtteam:structurize:${project.minecraftVersion}-${project.structurize_version}")
 
-    implementation fg.deobf("com.ldtteam:domum_ornamentum:${project.exactMinecraftVersion}-${project.domumOrnamentumVersion}:universal")
+    implementation fg.deobf("com.ldtteam:domum_ornamentum:${project.domumOrnamentumVersion}:universal")
 
 }
