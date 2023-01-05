@@ -30,7 +30,7 @@ public class ModBlocks
     public static <B extends Block> RegistryObject<B> register(String name, Supplier<B> block)
     {
         RegistryObject<B> registered = BLOCKS.register(name.toLowerCase(Locale.ENGLISH), block);
-        ITEMS.register(name.toLowerCase(Locale.ENGLISH), () -> new BlockItem(registered.get(), new Item.Properties().tab(CreativeModeTab.TAB_REDSTONE)));
+        ITEMS.register(name.toLowerCase(Locale.ENGLISH), () -> new BlockItem(registered.get(), new Item.Properties()));
         return registered;
     }
 }

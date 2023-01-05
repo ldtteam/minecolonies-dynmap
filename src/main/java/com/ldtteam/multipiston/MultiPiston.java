@@ -1,5 +1,8 @@
 package com.ldtteam.multipiston;
 
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraftforge.event.CreativeModeTabEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
@@ -23,6 +26,15 @@ public class MultiPiston
         ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
         TILE_ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
         Mod.EventBusSubscriber.Bus.MOD.bus().get().register(LifeCycleEvents.class);
-        Mod.EventBusSubscriber.Bus.FORGE.bus().get().register(this.getClass());
+        Mod.EventBusSubscriber.Bus.MOD.bus().get().register(this.getClass());
+    }
+
+    @SubscribeEvent
+    public static void CreativeTabEvent(final CreativeModeTabEvent.BuildContents event)
+    {
+        if (event.getTab() == CreativeModeTabs.REDSTONE_BLOCKS)
+        {
+            event.accept(ModBlocks.multipiston);
+        }
     }
 }
