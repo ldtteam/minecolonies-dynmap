@@ -96,7 +96,7 @@ public class MultiPistonChangeMessage implements IMessage
     @Override
     public void onExecute(final NetworkEvent.Context ctxIn, final boolean isLogicalServer)
     {
-        final Level world = ctxIn.getSender().getLevel();
+        final Level world = ctxIn.getSender().level();
         final BlockEntity entity = world.getBlockEntity(pos);
         if (entity instanceof TileEntityMultiPiston)
         {

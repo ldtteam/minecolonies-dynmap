@@ -199,7 +199,7 @@ public class TileEntityMultiPiston extends BlockEntity implements IRotatableBloc
 
                 final BlockPos posToGo = blockToGoTo > 0 ? worldPosition.relative(currentDirection, blockToGoTo) : worldPosition.relative(currentOutPutDirection, Math.abs(blockToGoTo));
                 final BlockPos posToGoFrom = blockToGoFrom > 0 ? worldPosition.relative(currentDirection, blockToGoFrom) : worldPosition.relative(currentOutPutDirection, Math.abs(blockToGoFrom));
-                if (level.isEmptyBlock(posToGo) || level.getBlockState(posToGo).getMaterial().isLiquid())
+                if (level.isEmptyBlock(posToGo) || level.getBlockState(posToGo).liquid())
                 {
                     BlockState tempState = level.getBlockState(posToGoFrom);
                     if (blockToMove.getBlock() == tempState.getBlock() && level.hasChunkAt(posToGoFrom) && level.hasChunkAt(posToGo))
