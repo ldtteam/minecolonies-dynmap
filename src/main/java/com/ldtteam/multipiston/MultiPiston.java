@@ -26,8 +26,7 @@ public class MultiPiston
     public static final String                            MOD_ID  = "multipiston";
     public static final DeferredRegister<CreativeModeTab> TAB_REG = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MOD_ID);
 
-    public static final RegistryObject<CreativeModeTab> GENERAL = TAB_REG.register("general", () -> new CreativeModeTab.Builder(CreativeModeTab.Row.TOP, 1).withTabsBefore(
-      CreativeModeTabs.SEARCH).icon(() -> new ItemStack(ModBlocks.multipiston.get())).title(Component.translatable("block.multipiston.multipistonblock")).displayItems((config, output) -> {
+    public static final RegistryObject<CreativeModeTab> GENERAL = TAB_REG.register("general", () -> new CreativeModeTab.Builder(CreativeModeTab.Row.TOP, 1).icon(() -> new ItemStack(ModBlocks.multipiston.get())).title(Component.translatable("block.multipiston.multipistonblock")).displayItems((config, output) -> {
         output.accept(ModBlocks.multipiston.get());
     }).build());
 
