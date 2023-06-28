@@ -10,7 +10,8 @@ minecraft.runs.all {
 }
 
 repositories {
-    maven { url = 'https://files.minecraftforge.net/maven' }
+    maven { url 'https://files.minecraftforge.net/maven' }
+    maven { url 'https://ldtteam.jfrog.io/ldtteam/modding' }
     mavenLocal()
     mavenCentral()
     maven {
@@ -19,10 +20,5 @@ repositories {
 }
 
 dependencies {
-    compileOnly fg.deobf("com.ldtteam:blockui:${project.blockUiVersion}")
-    implementation fg.deobf("com.ldtteam:blockui:${project.blockUiVersion}")
-
-    implementation fg.deobf("com.ldtteam:structurize:${project.minecraftVersion}-${project.structurize_version}")
-
-    implementation fg.deobf("com.ldtteam:domum_ornamentum:${project.domumOrnamentumVersion}:universal")
+    compileOnly fg.deobf("com.ldtteam:minecolonies:${project.minecoloniesVersion}")
 }

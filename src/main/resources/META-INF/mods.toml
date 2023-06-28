@@ -20,7 +20,7 @@ modId="multipiston" #mandatory
 # see the associated build.gradle script for how to populate this completely automatically during a build
 version="${version}" #mandatory
  # A display name for the mod
-displayName="Multi-Piston" #mandatory
+displayName="Dynmap for Minecolonies" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification https://mcforge.readthedocs.io/en/latest/gettingstarted/autoupdate/
 #updateJSONURL="https://change.me.example.invalid/updates.json" #optional
 # A URL for the "homepage" for this mod, displayed in the mod UI
@@ -33,7 +33,7 @@ credits="" #optional
 authors="Let's Dev Together Team" #optional
 # The description text for the mod (multi line!) (#mandatory)
 description='''
-Piston unlimited adds the multipiston block which allows you to move any block with a handy GUI into any direction!
+Integration for Dynmap to show all colonies from Minecolonies in your world.
 '''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.multipiston]] #optional
@@ -56,14 +56,8 @@ Piston unlimited adds the multipiston block which allows you to move any block w
     ordering="NONE"
     side="BOTH"
 [[dependencies.multipiston]]
-     modId="blockui"
+     modId="minecolonies"
      mandatory=true
-     versionRange="[0.0.59-ALPHA,)"
+     versionRange="[1.0.1510-ALPHA,)"
      ordering="AFTER"
      side="BOTH"
-[[dependencies.multipiston]]
-    modId="structurize"
-    mandatory=true
-    versionRange="[1.19-1.0.420-ALPHA, )"
-    ordering="AFTER"
-    side="BOTH"
