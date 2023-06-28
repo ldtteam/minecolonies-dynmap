@@ -6,7 +6,7 @@
 # The name of the mod loader type to load - for regular FML @Mod mods it should be javafml
 modLoader="javafml" #mandatory
 # A version range to match for said mod loader - for regular FML @Mod it will be the forge version
-loaderVersion="[37,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
+loaderVersion="[41,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
 # The license for you mod. This is mandatory metadata and allows for easier comprehension of your redistributive properties.
 # Review your options at https://choosealicense.com/. All rights reserved is the default copyright stance, and is thus the default here.
 license="gpl"
@@ -15,13 +15,12 @@ license="gpl"
 # A list of mods - how many allowed here is determined by the individual mod loader
 [[mods]] #mandatory
 # The modid of the mod
-modId="multipiston" #mandatory
+modId="minecoloniesdynmap" #mandatory
 # The version number of the mod - there's a few well known ${} variables useable here or just hardcode it
-# ${file.jarVersion} will substitute the value of the Implementation-Version as read from the mod's JAR file metadata
 # see the associated build.gradle script for how to populate this completely automatically during a build
-version="${file.jarVersion}" #mandatory
- # A display name for the mod
-displayName="Multi-Piston" #mandatory
+version="${version}" #mandatory
+# A display name for the mod
+displayName="Dynmap for Minecolonies" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification https://mcforge.readthedocs.io/en/latest/gettingstarted/autoupdate/
 #updateJSONURL="https://change.me.example.invalid/updates.json" #optional
 # A URL for the "homepage" for this mod, displayed in the mod UI
@@ -34,37 +33,31 @@ credits="" #optional
 authors="Let's Dev Together Team" #optional
 # The description text for the mod (multi line!) (#mandatory)
 description='''
-Piston unlimited adds the multipiston block which allows you to move any block with a handy GUI into any direction!
+Integration for Dynmap to show all colonies from Minecolonies in your world.
 '''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
-[[dependencies.multipiston]] #optional
+[[dependencies.minecoloniesdynmap]] #optional
     # the modid of the dependency
     modId="forge" #mandatory
     # Does this dependency have to exist - if not, ordering below must be specified
     mandatory=true #mandatory
     # The version range of the dependency
-    versionRange="[37,)" #mandatory
+    versionRange="[41.0.94,)" #mandatory
     # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
     ordering="NONE"
     # Side this dependency is applied on - BOTH, CLIENT or SERVER
-    side="BOTH"
+    side="SERVER"
 # Here's another dependency
-[[dependencies.multipiston]]
+[[dependencies.minecoloniesdynmap]]
     modId="minecraft"
     mandatory=true
-# This version range declares a minimum of the current minecraft version up to but not including the next major version
-    versionRange="[1.17.1,1.18)"
+    # This version range declares a minimum of the current minecraft version up to but not including the next major version
+    versionRange="[1.19.2)"
     ordering="NONE"
-    side="BOTH"
-[[dependencies.multipiston]]
-     modId="blockui"
-     mandatory=true
-     versionRange="[0.0.20-ALPHA,)"
-     ordering="AFTER"
-     side="BOTH"
-[[dependencies.multipiston]]
-    modId="structurize"
+    side="SERVER"
+[[dependencies.minecoloniesdynmap]]
+    modId="minecolonies"
     mandatory=true
-    versionRange="[1.17.1-0.13.239-ALPHA, )"
+    versionRange="[1.0.1433-ALPHA,)"
     ordering="AFTER"
-    side="BOTH"
+    side="SERVER"
