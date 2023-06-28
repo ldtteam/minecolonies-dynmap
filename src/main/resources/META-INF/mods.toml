@@ -15,7 +15,7 @@ license="gpl"
 # A list of mods - how many allowed here is determined by the individual mod loader
 [[mods]] #mandatory
 # The modid of the mod
-modId="multipiston" #mandatory
+modId="minecoloniesdynmap" #mandatory
 # The version number of the mod - there's a few well known ${} variables useable here or just hardcode it
 # see the associated build.gradle script for how to populate this completely automatically during a build
 version="${version}" #mandatory
@@ -36,7 +36,7 @@ description='''
 Integration for Dynmap to show all colonies from Minecolonies in your world.
 '''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
-[[dependencies.multipiston]] #optional
+[[dependencies.minecoloniesdynmap]] #optional
     # the modid of the dependency
     modId="forge" #mandatory
     # Does this dependency have to exist - if not, ordering below must be specified
@@ -48,14 +48,14 @@ Integration for Dynmap to show all colonies from Minecolonies in your world.
     # Side this dependency is applied on - BOTH, CLIENT or SERVER
     side="BOTH"
 # Here's another dependency
-[[dependencies.multipiston]]
+[[dependencies.minecoloniesdynmap]]
     modId="minecraft"
     mandatory=true
 # This version range declares a minimum of the current minecraft version up to but not including the next major version
     versionRange="[1.20,1.21)"
     ordering="NONE"
     side="BOTH"
-[[dependencies.multipiston]]
+[[dependencies.minecoloniesdynmap]]
      modId="minecolonies"
      mandatory=true
      versionRange="[1.0.1510-ALPHA,)"
