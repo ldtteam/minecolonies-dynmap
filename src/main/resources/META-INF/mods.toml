@@ -52,12 +52,18 @@ Integration for Dynmap to show all colonies from Minecolonies in your world.
     modId="minecraft"
     mandatory=true
     # This version range declares a minimum of the current minecraft version up to but not including the next major version
-    versionRange="[1.19.2)"
+    versionRange="[1.19.2,)"
     ordering="NONE"
     side="SERVER"
 [[dependencies.minecoloniesdynmap]]
     modId="minecolonies"
     mandatory=true
     versionRange="[1.0.1433-ALPHA,)"
+    ordering="AFTER"
+    side="SERVER"
+[[dependencies.minecoloniesdynmap]]
+    modId="dynmap"
+    mandatory=true
+    versionRange="[Dynmap-3.4-forge-1.19.2,)"
     ordering="AFTER"
     side="SERVER"
