@@ -1,1 +1,14 @@
+plugins {
+    id 'io.miret.etienne.sass' version '1.5.0'
+}
+
 apply from: 'https://raw.githubusercontent.com/ldtteam/OperaPublicaCreator/main/gradle/mod.gradle'
+
+compileSass {
+    outputDir = project.file("${projectDir}/src/main/resources/assets/styles")
+    sourceDir = project.file("${projectDir}/src/main/sass")
+    style = compressed
+}
+
+processResources.dependsOn(compileSass)
+sourcesJar.dependsOn(compileSass)

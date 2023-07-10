@@ -46,7 +46,7 @@ Integration for Dynmap to show all colonies from Minecolonies in your world.
     # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
     ordering="NONE"
     # Side this dependency is applied on - BOTH, CLIENT or SERVER
-    side="SERVER"
+    side="BOTH"
 # Here's another dependency
 [[dependencies.minecoloniesdynmap]]
     modId="minecraft"
@@ -54,7 +54,7 @@ Integration for Dynmap to show all colonies from Minecolonies in your world.
     # This version range declares a minimum of the current minecraft version up to but not including the next major version
     versionRange="[1.19.2,)"
     ordering="NONE"
-    side="SERVER"
+    side="BOTH"
 [[dependencies.minecoloniesdynmap]]
     modId="minecolonies"
     mandatory=true
