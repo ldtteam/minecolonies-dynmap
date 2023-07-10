@@ -1,24 +1,40 @@
-configurations {
-    library
-    implementation.extendsFrom library
-}
-
-minecraft.runs.all {
-    lazyToken('minecraft_classpath') {
-        configurations.library.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
-    }
-}
-
 repositories {
-    maven { url 'https://files.minecraftforge.net/maven' }
-    maven { url 'https://ldtteam.jfrog.io/ldtteam/modding' }
     mavenLocal()
-    mavenCentral()
     maven {
-        url "https://plugins.gradle.org/m2/"
+        name "Dynmap"
+        url "https://repo.mikeprimm.com/"
+    }
+    maven {
+        url "https://cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
     }
 }
 
 dependencies {
-    compileOnly fg.deobf("com.ldtteam:minecolonies:${project.minecoloniesVersion}")
+    implementation(fg.deobf("com.ldtteam:minecolonies:${project.minecoloniesVersion}")) {
+        transitive = false
+    }
+
+    compileOnly(fg.deobf("com.ldtteam:domum_ornamentum:${project.domumOrnamentumVersion}:universal")) {
+        transitive = false
+    }
+    runtimeOnly(fg.deobf("com.ldtteam:domum_ornamentum:${project.domumOrnamentumVersion}:universal")) {
+        transitive = false
+    }
+
+    implementation(fg.deobf("com.ldtteam:blockui:${project.blockUI_version}")) {
+        transitive = false
+    }
+
+    implementation(fg.deobf("com.ldtteam:structurize:${project.structurize_version}")) {
+        transitive = false
+    }
+
+    compileOnly fg.deobf("us.dynmap:DynmapCoreAPI:${project.dynmapApiVersion}")
+    implementation fg.deobf("curse.maven:dynmapforge-59433:${project.dynmapFileVersion}")
+
+    library("org.jsoup:jsoup:${project.jsoupVersion}")
+    contained("org.jsoup:jsoup:${project.jsoupVersion}")
 }
