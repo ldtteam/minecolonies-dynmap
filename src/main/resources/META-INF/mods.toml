@@ -58,7 +58,7 @@ Integration for Dynmap to show all colonies from Minecolonies in your world.
 [[dependencies.minecoloniesdynmap]]
     modId="minecolonies"
     mandatory=true
-    versionRange="[1.0.1433-ALPHA,)"
+    versionRange="[1.19.2-1.1.33-BETA,)"
     ordering="AFTER"
     side="SERVER"
 [[dependencies.minecoloniesdynmap]]
