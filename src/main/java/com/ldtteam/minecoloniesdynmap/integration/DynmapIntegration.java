@@ -75,9 +75,12 @@ public class DynmapIntegration extends DynmapCommonAPIListener
         icons.add(villageIcon);
         icons.add(cityIcon);
 
-        DynmapWebFiles.writeWebFile("minecolonies.css", DynmapWebFiles.FileType.CSS, true);
-        DynmapWebFiles.writeWebFile("minecolonies.css.map", DynmapWebFiles.FileType.CSS, false);
-        DynmapWebFiles.writeWebFile("minecolonies.js", DynmapWebFiles.FileType.JS, true);
+        try (DynmapWebFiles fileWriter = new DynmapWebFiles())
+        {
+            fileWriter.writeWebFile("minecolonies.css", DynmapWebFiles.FileType.CSS, true);
+            fileWriter.writeWebFile("minecolonies.css.map", DynmapWebFiles.FileType.CSS, false);
+            fileWriter.writeWebFile("minecolonies.js", DynmapWebFiles.FileType.JS, true);
+        }
 
         this.colonySet = markerApi.createMarkerSet(DYNMAP_COLONY_MARKER_SET_ID, DYNMAP_COLONY_MARKER_SET_NAME, icons, false);
         this.colonySet.setDefaultMarkerIcon(outpostIcon);

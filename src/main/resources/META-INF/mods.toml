@@ -19,7 +19,7 @@ modId="minecoloniesdynmap" #mandatory
 # The version number of the mod - there's a few well known ${} variables useable here or just hardcode it
 # see the associated build.gradle script for how to populate this completely automatically during a build
 version="${version}" #mandatory
- # A display name for the mod
+# A display name for the mod
 displayName="Dynmap for Minecolonies" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification https://mcforge.readthedocs.io/en/latest/gettingstarted/autoupdate/
 #updateJSONURL="https://change.me.example.invalid/updates.json" #optional
@@ -60,10 +60,10 @@ Integration for Dynmap to show all colonies from Minecolonies in your world.
      mandatory=true
      versionRange="[${minecoloniesVersion},)"
      ordering="AFTER"
-     side="BOTH"
+     side="SERVER"
 [[dependencies.minecoloniesdynmap]]
     modId="dynmap"
     mandatory=true
     versionRange="[${dynmapApiVersion},)"
     ordering="AFTER"
-    side="BOTH"
+    side="SERVER"

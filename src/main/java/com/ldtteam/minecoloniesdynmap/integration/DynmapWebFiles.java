@@ -9,17 +9,37 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.BiConsumer;
 import java.util.function.UnaryOperator;
 
 /**
  * Utility class for writing asset files to Dynmap it's web server folder.
  */
-public class DynmapWebFiles
+public class DynmapWebFiles implements AutoCloseable
 {
-    private DynmapWebFiles()
+    /**
+     * The files that have to be written to the index.html of Dynmap.
+     */
+    private final Map<String, FileType> filesToWriteToIndex;
+
+    /**
+     * The thread pool used for writing the web files.
+     */
+    private final ExecutorService executorService;
+
+    /**
+     * Default constructor.
+     */
+    public DynmapWebFiles()
     {
+        filesToWriteToIndex = new HashMap<>();
+        executorService = Executors.newSingleThreadExecutor();
     }
 
     /**
@@ -30,12 +50,18 @@ public class DynmapWebFiles
      * @param fileType     the file type, determines where the file will be stored.
      * @param writeToIndex whether to write the respective import statement into the index.html or not.
      */
-    public static void writeWebFile(String fileName, FileType fileType, boolean writeToIndex)
+    public void writeWebFile(String fileName, FileType fileType, boolean writeToIndex)
     {
         try
         {
             final InputStream inputStream = DynmapWebFiles.class.getResourceAsStream(String.format("/assets/%s/%s", fileType.assetsDirectory, fileName));
-            final Path targetFile = new File(String.format("dynmap/web/%s/%s", fileType.outputDirectory, fileName)).toPath();
+            final Path targetDirectory = Paths.get("dynmap/web", fileType.outputDirectory);
+            final Path targetFile = targetDirectory.resolve(fileName);
+
+            if (!Files.isDirectory(targetDirectory))
+            {
+                Files.createDirectories(targetDirectory);
+            }
 
             if (inputStream != null)
             {
@@ -44,15 +70,41 @@ public class DynmapWebFiles
 
             if (writeToIndex)
             {
-                String fileLink = String.format("%s/%s", fileType.outputDirectory, fileName);
+                filesToWriteToIndex.put(fileName, fileType);
+            }
+        }
+        catch (Exception e)
+        {
+            throw new IllegalStateException("Exception occurred during writing of web files to Dynmap web folder.", e);
+        }
+    }
+
+    @Override
+    public void close()
+    {
+        executorService.submit(this::writeToIndex);
+    }
+
+    private void writeToIndex()
+    {
+        Exception exception = null;
+        do
+        {
+            try
+            {
                 File indexFile = new File("dynmap/web/index.html");
                 Document document = Jsoup.parse(indexFile, StandardCharsets.UTF_8.name());
-                final Elements selection = document.head().select(fileType.selector.apply(fileLink));
 
-                if (selection.isEmpty())
+                for (Map.Entry<String, FileType> entry : filesToWriteToIndex.entrySet())
                 {
-                    final Element element = document.head().appendElement(fileType.tagName);
-                    fileType.elementBuilder.accept(element, fileLink);
+                    String fileLink = String.format("%s/%s", entry.getValue().outputDirectory, entry.getKey());
+                    final Elements selection = document.head().select(entry.getValue().selector.apply(fileLink));
+
+                    if (selection.isEmpty())
+                    {
+                        final Element element = document.head().appendElement(entry.getValue().tagName);
+                        entry.getValue().elementBuilder.accept(element, fileLink);
+                    }
                 }
 
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter(indexFile)))
@@ -60,11 +112,12 @@ public class DynmapWebFiles
                     writer.write(document.outerHtml());
                 }
             }
+            catch (Exception ex)
+            {
+                exception = ex;
+            }
         }
-        catch (IOException e)
-        {
-            throw new RuntimeException(e);
-        }
+        while (exception instanceof FileNotFoundException);
     }
 
     public enum FileType
