@@ -2,6 +2,7 @@ package com.ldtteam.minecoloniesdynmap.integration;
 
 import com.ldtteam.minecoloniesdynmap.area.AreaGenerator;
 import com.ldtteam.minecoloniesdynmap.area.ColonyArea;
+import com.ldtteam.minecoloniesdynmap.util.I18n;
 import com.minecolonies.api.colony.ICitizenData;
 import com.minecolonies.api.colony.IColony;
 import com.minecolonies.api.colony.buildings.IBuilding;
@@ -10,8 +11,8 @@ import com.minecolonies.api.colony.buildings.registry.BuildingEntry;
 import com.minecolonies.api.colony.jobs.IJob;
 import com.minecolonies.api.colony.jobs.registry.JobEntry;
 import com.minecolonies.api.util.constant.CitizenConstants;
+import com.minecolonies.api.util.constant.Constants;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.storage.ServerLevelData;
@@ -278,7 +279,7 @@ public class ColonyMarker
             for (Map.Entry<BuildingEntry, Integer> entry : buildingCounts.entrySet())
             {
                 final String key = String.format("building_info_%s", entry.getKey().getRegistryName().getPath());
-                context.put(key, entry.getValue().toString() + ":" + I18n.get(entry.getKey().getTranslationKey()));
+                context.put(key, entry.getValue().toString() + ":" + I18n.translate(Constants.MOD_ID, entry.getKey().getTranslationKey()));
             }
 
             final List<ICitizenData> citizens = colony.getCitizenManager().getCitizens();
@@ -289,7 +290,7 @@ public class ColonyMarker
                 final Optional<String> job = Optional.ofNullable(citizen.getJob())
                                                .map(IJob::getJobRegistryEntry)
                                                .map(JobEntry::getTranslationKey)
-                                               .map(I18n::get);
+                                               .map(m -> I18n.translate(Constants.MOD_ID, m));
                 context.put(key,
                   Base64.getEncoder().encodeToString(citizen.getName().getBytes()) + job.map(j -> ":" + Base64.getEncoder().encodeToString(j.getBytes())).orElse(""));
             }
