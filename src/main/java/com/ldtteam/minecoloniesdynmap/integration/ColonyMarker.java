@@ -193,9 +193,10 @@ public class ColonyMarker
      */
     public static void deleteAll()
     {
-        for (ColonyMarker marker : MARKERS.values())
+        final List<ColonyMarker> markers = MARKERS.values().stream().toList();
+        for (int i = markers.size() - 1; i >= 0; i--)
         {
-            ColonyMarker.deleteMarker(marker.colony);
+            ColonyMarker.deleteMarker(markers.get(i).colony);
         }
     }
 
